@@ -1,10 +1,11 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { Header } from "./components/Header/Header";
 import { Home } from "./components/Home/Home";
 import { Register } from "./components/Register/Register";
 import { Login } from "./components/Login/Login";
 import { useEffect, useState } from "react";
 import { UserContext } from "./contexts/AuthContext";
+import { Protected } from "./components/Protected/Protected";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -19,8 +20,9 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
+        <Route path="/register" element={!user ? <Register /> : <Navigate to="/" />} />
+        <Route path="/protected" element={user ? <Protected /> : <Navigate to="/login" />} />
       </Routes>
     </UserContext.Provider>
   );
