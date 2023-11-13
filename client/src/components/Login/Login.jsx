@@ -1,9 +1,9 @@
 import { useForm } from "../../hooks/useForm";
 import { login, setCookie } from "../../services/authService";
 import { useNavigate } from "react-router";
-import styles from "./login.module.css";
+import styles from "../Login/login.module.css";
 import { useContext } from "react";
-import { UserContext } from "../../contexts/UserContext";
+import { UserContext } from "../../contexts/AuthContext";
 
 export const Login = () => {
   const initialValues = {

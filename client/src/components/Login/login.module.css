@@ -15,6 +15,10 @@ form {
     align-items: center;
 }
 
+.form-register{
+    height: 640px;
+}
+
 label {
     display: block;
     margin-bottom: 8px;

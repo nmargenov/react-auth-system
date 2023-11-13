@@ -6,6 +6,10 @@ export const login = (data) => {
     return post(BASE_URL + '/login', data);
 }
 
+export const register = (data) =>{
+    return post(BASE_URL+"/register",data);
+}
+
 export const logout = () => {
     localStorage.clear('authToken');
 }

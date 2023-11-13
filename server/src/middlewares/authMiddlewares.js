@@ -6,15 +6,13 @@ exports.auth = async (req, res, next) => {
 
     if (token) {
         try {
-            const newToken = token.split(' ')[1];
-            const decodedToken = await verify(newToken, SECRET);
+            const decodedToken = await verify(token, SECRET);
 
             req.user=decodedToken;
             res.isLogged = true;
             res.locals.isLogged = true;
             res.locals.user = decodedToken;
-            
-            
+
             next();
         } catch (err) {
             res.status(409).send({ message: "Invalid authorization token!" });

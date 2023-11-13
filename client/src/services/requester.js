@@ -3,10 +3,17 @@ const requester = async (method, url, data) => {
     if (method !== "GET") {
         options.method = method;
         options.headers = {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         }
         if (data) {
             options.body = JSON.stringify(data);
+        }
+    }
+    const token = localStorage.getItem('authToken');
+    if (token) {
+        options.headers = {
+            ...options.headers,
+            'x-authorization': token
         }
     }
 
