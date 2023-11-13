@@ -1,5 +1,9 @@
 import { useForm } from "../../hooks/useForm";
+import { login, setCookie } from "../../services/authService";
+import { useNavigate } from "react-router";
 import styles from "./login.module.css";
+import { useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
 
 export const Login = () => {
   const initialValues = {
@@ -9,9 +13,22 @@ export const Login = () => {
 
   const { values, onInputChange } = useForm(initialValues);
 
-  function onSubmit(e){
+  const {setUser} = useContext(UserContext);
+
+
+  const navigate = useNavigate();
+
+  function onSubmit(e) {
     e.preventDefault();
-    console.log(values);
+    login(values)
+      .then((data) => {
+        setCookie(data);
+        setUser(data);
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
@@ -20,7 +37,7 @@ export const Login = () => {
         <h2>Login</h2>
         <label htmlFor="username">Username:</label>
         <input
-        onChange={onInputChange}
+          onChange={onInputChange}
           type="text"
           id={styles["username"]}
           name="username"
