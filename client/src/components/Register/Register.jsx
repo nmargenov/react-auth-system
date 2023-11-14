@@ -1,5 +1,5 @@
 import { useForm } from "../../hooks/useForm";
-import { register, setCookie } from "../../services/authService";
+import { register } from "../../services/authService";
 import { useNavigate } from "react-router";
 import styles from "../Login/login.module.css";
 import { useContext } from "react";
@@ -26,7 +26,6 @@ export const Register = () => {
     e.preventDefault();
     register(values)
       .then((data) => {
-        setCookie(data);
         setUser(data);
         navigate("/");
       })

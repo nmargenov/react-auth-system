@@ -1,17 +1,12 @@
 import { Link } from "react-router-dom";
 import styles from "./header.module.css";
-import { logout } from "../../services/authService";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/AuthContext";
 import * as jwt from 'jwt-decode';
 
 export const Header = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
 
-  function clearLogout() {
-    setUser(null);
-    logout();
-  }
   return (
     <nav>
       {user && <span className={styles['hello-msg']}>Hello {jwt.jwtDecode(user).username}</span>}
@@ -20,7 +15,7 @@ export const Header = () => {
       </Link>
       {user && (
         <>
-          <Link onClick={clearLogout} to="/" className={styles["logout"]}>
+          <Link onClick={logout} to="/" className={styles["logout"]}>
             Logout
           </Link>
           <Link to="/protected" className={styles["protected"]}>

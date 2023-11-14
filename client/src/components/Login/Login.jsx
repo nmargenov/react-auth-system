@@ -1,5 +1,5 @@
 import { useForm } from "../../hooks/useForm";
-import { login, setCookie } from "../../services/authService";
+import { login } from "../../services/authService";
 import { useNavigate } from "react-router";
 import styles from "../Login/login.module.css";
 import { useContext } from "react";
@@ -22,7 +22,6 @@ export const Login = () => {
     e.preventDefault();
     login(values)
       .then((data) => {
-        setCookie(data);
         setUser(data);
         navigate("/");
       })
