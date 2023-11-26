@@ -1,8 +1,8 @@
 const User = require("../models/User");
 
 const bcrypt = require('bcrypt');
-const { sign } = require("../utils/jwt");
-const { SECRET } = require("../config/settings");
+const { sign, verify } = require("../utils/jwt");
+const { SECRET, RESET_SECRET } = require("../config/settings");
 
 exports.register = async(username,firstName,lastName,password,rePassword,email,age) =>{
     if(password!=rePassword){
@@ -78,3 +78,29 @@ exports.login = async(username,password) =>{
 
     return token;
 };
+
+exports.jwtResetPassword = async(username,email,age)=>{
+    const user = await User.findOne({username});
+    if(!user || user.email !== email || user.age!==Number(age)){
+        throw new Error("Invalid data");
+    }
+
+    const token = await sign({username},RESET_SECRET,{expiresIn:'24h'});
+    return token;
+}
+
+exports.resetPassword = async(token,newPassword,rePassword)=>{
+    if(newPassword!==rePassword){
+        throw new Error("Passwords do not match")
+    }
+    if(newPassword.length<6){
+        throw new Error("Password must be at least 6 characters long!");
+    }
+    const verifiedToken = await verify(token,RESET_SECRET);
+    const username = verifiedToken.username;
+    
+    const bcryptPass = await bcrypt.hash(newPassword,10);
+    await User.findOneAndUpdate({username},{password:bcryptPass});
+
+    return null;
+}
